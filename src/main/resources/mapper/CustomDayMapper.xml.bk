@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.yxy.mydays.dao.mapper.CustomDayMapper">
+    <select id="findCustomDayByUserId" resultType="me.yxy.mydays.dao.pojo.CustomDay">
+        SELECT * FROM custom_day
+        WHERE state = 1 AND userId = #{userId}
+    </select>
+
+
+    <insert id="addOne" parameterType="me.yxy.mydays.dao.pojo.CustomDay">
+        INSERT INTO custom_day (userId,name,year,month,date,image) VALUES (#{userId},#{name},#{year},#{month},#{date},#{image})
+
+    </insert>
+</mapper>
