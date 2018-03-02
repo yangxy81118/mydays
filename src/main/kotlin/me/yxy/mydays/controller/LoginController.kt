@@ -33,7 +33,7 @@ class LoginController {
 
         var url = "https://api.weixin.qq.com/sns/jscode2session?appid=$APP_ID&secret=$APP_SECRET&js_code=$code&grant_type=authorization_code"
         val response = URLTool.get(url)
-        println("reponse:$response")
+        println("response:$response")
 
         val gson = Gson()
         val wxResponseVO = gson.fromJson(response, WXSessionResponse::class.java)

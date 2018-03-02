@@ -1,4 +1,4 @@
-package me.yxy.mydays.controller
+package me.yxy.mydays.service
 
 import me.yxy.mydays.controller.vo.SomeDayView
 import me.yxy.mydays.dao.mapper.CustomDayMapper
@@ -8,37 +8,23 @@ import me.yxy.mydays.dao.pojo.Holiday
 import org.joda.time.DateTime
 import org.joda.time.Days
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
+import org.springframework.stereotype.Service
 import java.util.*
 
-
 /**
- * 日历信息查询
+ * 具体的Day服务，这个是可以扩展成RPC方法
  */
-@RestController
-@RequestMapping("/days")
-class DaysController {
+@Service
+class DayService{
 
     @Autowired
-    lateinit var holidayMapper:HolidayMapper
+    lateinit var holidayMapper: HolidayMapper
 
     @Autowired
-    lateinit var customDayMapper:CustomDayMapper
+    lateinit var customDayMapper: CustomDayMapper
 
+    fun getDaysByUserId(userId:String?):MutableList<SomeDayView>{
 
-    @GetMapping("/get")
-    fun getOneDay(@RequestParam(value = "dayId") dayId:Int): SomeDayView? {
-        val source: Holiday = holidayMapper.findHolidayById(dayId) ?: return null
-
-        //Holidays
-        var viewItem = SomeDayView(source?.id,source?.name,source?.year,source?.month,source?.date,source?.image)
-        findRemainDays(viewItem)
-
-        return viewItem
-    }
-
-    @GetMapping("/list")
-    fun listDays(@RequestParam(value = "userId") userId: String): MutableList<SomeDayView> {
         val holidaySource:MutableList<Holiday> = holidayMapper.findAllHolidays()
 
         //Holidays
@@ -51,19 +37,20 @@ class DaysController {
             }
         }
 
-        //Custom Days
-        val customDays:MutableList<CustomDay> = customDayMapper.findDayByUserId(Integer.parseInt(userId))
-        customDays.forEach{
-            var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image)
-            val isInFuture:Boolean = findRemainDays(viewItem)
-            if(isInFuture){
-                viewItem.custom = true
-                dayViews.add(viewItem)
+        userId?.let{
+            val customDays:MutableList<CustomDay> = customDayMapper.findDayByUserId(Integer.parseInt(userId))
+            customDays.forEach{
+                var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image)
+                val isInFuture:Boolean = findRemainDays(viewItem)
+                if(isInFuture){
+                    viewItem.custom = true
+                    dayViews.add(viewItem)
+                }
             }
-        }
 
-        //Sort
-        Collections.sort(dayViews,{firstOne,secondOne -> firstOne.remain - secondOne.remain})
+            //Sort
+            Collections.sort(dayViews,{ firstOne, secondOne -> firstOne.remain - secondOne.remain})
+        }
 
         return dayViews
     }
@@ -71,10 +58,10 @@ class DaysController {
     //TODO 当天的判断是有bug的
     private fun findRemainDays(viewItem: SomeDayView) : Boolean {
 
-        val now:DateTime = DateTime.now()
+        val now: DateTime = DateTime.now()
         var year:Int = now.year
 
-        val dayTemp:DateTime = DateTime(year,viewItem.month,viewItem.date,0,0,0)
+        val dayTemp: DateTime = DateTime(year,viewItem.month,viewItem.date,0,0,0)
         //如果晚于当前时间，则不需要+1
 
         if(viewItem.year!=0){
@@ -95,6 +82,4 @@ class DaysController {
         if(viewItem.remain > 365) viewItem.remain -= 365
         return true
     }
-
 }
-

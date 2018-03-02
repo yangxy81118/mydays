@@ -1,0 +1,19 @@
+schema {
+	query:Query
+}
+
+type Query{
+	days(userId:String) : [SomeDay]
+}
+
+type SomeDay{
+    id:Int
+    name:String
+    year:Int
+    month:Int
+    date:Int
+    image:String
+    remain:Int
+    custom:Boolean
+}
+
