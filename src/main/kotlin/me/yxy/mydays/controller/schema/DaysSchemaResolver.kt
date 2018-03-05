@@ -3,10 +3,12 @@ package me.yxy.mydays.controller.schema
 import graphql.schema.idl.RuntimeWiring
 import me.yxy.mydays.controller.fetcher.DaysFetcher
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
-import java.io.File
+import org.springframework.core.io.ClassPathResource
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.Reader
+
 
 /**
  * days模块
@@ -14,11 +16,9 @@ import java.io.File
 @Service
 class DaysSchemaResolver : BaseSchemaResolver() {
 
-    @Value("classpath:days.graphql")
-    lateinit var resource: Resource
-
-    override fun getResourceFile(): File {
-        return resource.file
+    override fun getResourceFile(): Reader {
+        val resource = ClassPathResource("days.graphql")
+        return InputStreamReader(resource.inputStream)
     }
 
     @Autowired
@@ -31,7 +31,6 @@ class DaysSchemaResolver : BaseSchemaResolver() {
                 .type("Query")
                 { typeW -> typeW.dataFetcher("days",daysFetcher) }
                 .build()
-
     }
 
 }

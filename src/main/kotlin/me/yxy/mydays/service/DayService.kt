@@ -48,9 +48,10 @@ class DayService{
                 }
             }
 
-            //Sort
-            Collections.sort(dayViews,{ firstOne, secondOne -> firstOne.remain - secondOne.remain})
         }
+
+        //Sort
+        dayViews.sortWith(Comparator { firstOne, secondOne -> firstOne.remain - secondOne.remain})
 
         return dayViews
     }

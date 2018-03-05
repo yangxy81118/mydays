@@ -7,6 +7,7 @@ import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
 import graphql.schema.idl.TypeDefinitionRegistry
 import java.io.File
+import java.io.Reader
 import javax.annotation.PostConstruct
 
 abstract class BaseSchemaResolver {
@@ -24,7 +25,7 @@ abstract class BaseSchemaResolver {
     /**
      * 获取graphql资源文件
      */
-    abstract fun getResourceFile(): File
+    abstract fun getResourceFile():Reader
 
     /**
      * 构建schema对应的fetcher
