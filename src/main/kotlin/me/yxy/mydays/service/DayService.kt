@@ -23,6 +23,29 @@ class DayService{
     @Autowired
     lateinit var customDayMapper: CustomDayMapper
 
+
+    fun getSomeDayById(dayId:Int):SomeDayView?{
+
+        val holiday:Holiday? = holidayMapper.findHolidayById(dayId)
+
+        holiday?.let{
+            var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
+            findRemainDays(viewItem)
+            return viewItem
+        }
+
+        val customDay:CustomDay? = customDayMapper.findDayId(dayId)
+
+        customDay?.let {
+            var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
+            findRemainDays(viewItem)
+            return viewItem
+        }
+
+        return null
+    }
+
+
     fun getDaysByUserId(userId:String?):MutableList<SomeDayView>{
 
         val holidaySource:MutableList<Holiday> = holidayMapper.findAllHolidays()
@@ -30,7 +53,7 @@ class DayService{
         //Holidays
         val dayViews = mutableListOf<SomeDayView>()
         holidaySource.forEach{
-            var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image)
+            var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
             val isInFuture:Boolean = findRemainDays(viewItem)
             if(isInFuture) {
                 dayViews.add(viewItem)
@@ -40,7 +63,7 @@ class DayService{
         userId?.let{
             val customDays:MutableList<CustomDay> = customDayMapper.findDayByUserId(Integer.parseInt(userId))
             customDays.forEach{
-                var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image)
+                var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
                 val isInFuture:Boolean = findRemainDays(viewItem)
                 if(isInFuture){
                     viewItem.custom = true

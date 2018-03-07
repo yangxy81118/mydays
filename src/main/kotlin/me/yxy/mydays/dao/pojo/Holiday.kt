@@ -9,5 +9,8 @@ data class Holiday(val id:Int = 0,
                    val month:Int = 0,
                    val date:Int = 0,
                    val image:String = "",
+                   val engName:String = "",
+                   val brief:String = "",
+                   val lunar:String = "",
                    val suggestions:String? = null)
 

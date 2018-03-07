@@ -4,6 +4,7 @@ schema {
 
 type Query{
 	days(userId:String) : [SomeDay]
+	day(dayId:Int) : SomeDay
 }
 
 type SomeDay{
@@ -15,5 +16,8 @@ type SomeDay{
     image:String
     remain:Int
     custom:Boolean
+    engName:String
+    brief:String
+    lunar:String
 }
 
