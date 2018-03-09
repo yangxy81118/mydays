@@ -19,5 +19,13 @@ type SomeDay{
     engName:String
     brief:String
     lunar:String
+    suggestions:[Suggestion]
+}
+
+
+type Suggestion{
+    id:Int
+    content:String
+    image:String
 }
 

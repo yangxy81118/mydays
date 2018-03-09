@@ -1,6 +1,6 @@
 package me.yxy.mydays.dao.mapper
 
-import me.yxy.mydays.dao.pojo.Holiday
+import me.yxy.mydays.dao.pojo.HolidayDO
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 
@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Select
 public interface HolidayMapper{
 
     @Select("SELECT * FROM holiday WHERE enable = 1")
-    fun findAllHolidays():MutableList<Holiday>
+    fun findAllHolidays():MutableList<HolidayDO>
 
     @Select("SELECT * FROM holiday WHERE enable = 1 AND id = #{id}")
-    fun findHolidayById(id:Int):Holiday?
+    fun findHolidayById(id:Int):HolidayDO?
 
 }

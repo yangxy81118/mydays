@@ -1,12 +1,11 @@
 package me.yxy.mydays.controller.schema
 
 import graphql.schema.idl.RuntimeWiring
-import me.yxy.mydays.controller.fetcher.DayFetcher
-import me.yxy.mydays.controller.fetcher.DaysFetcher
+import me.yxy.mydays.controller.fetcher.Day
+import me.yxy.mydays.controller.fetcher.Days
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.core.io.ClassPathResource
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
 
@@ -23,10 +22,10 @@ class DaysSchemaResolver : BaseSchemaResolver() {
     }
 
     @Autowired
-    lateinit var daysFetcher: DaysFetcher
+    lateinit var daysFetcher: Days
 
     @Autowired
-    lateinit var dayFetcher: DayFetcher
+    lateinit var dayFetcher: Day
 
     override fun buildWiringContent(): RuntimeWiring {
 

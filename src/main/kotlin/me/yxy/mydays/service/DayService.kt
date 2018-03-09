@@ -3,8 +3,8 @@ package me.yxy.mydays.service
 import me.yxy.mydays.controller.vo.SomeDayView
 import me.yxy.mydays.dao.mapper.CustomDayMapper
 import me.yxy.mydays.dao.mapper.HolidayMapper
-import me.yxy.mydays.dao.pojo.CustomDay
-import me.yxy.mydays.dao.pojo.Holiday
+import me.yxy.mydays.dao.pojo.CustomDayDO
+import me.yxy.mydays.dao.pojo.HolidayDO
 import org.joda.time.DateTime
 import org.joda.time.Days
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +26,7 @@ class DayService{
 
     fun getSomeDayById(dayId:Int):SomeDayView?{
 
-        val holiday:Holiday? = holidayMapper.findHolidayById(dayId)
+        val holiday:HolidayDO? = holidayMapper.findHolidayById(dayId)
 
         holiday?.let{
             var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
@@ -34,7 +34,7 @@ class DayService{
             return viewItem
         }
 
-        val customDay:CustomDay? = customDayMapper.findDayId(dayId)
+        val customDay:CustomDayDO? = customDayMapper.findDayId(dayId)
 
         customDay?.let {
             var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
@@ -48,7 +48,7 @@ class DayService{
 
     fun getDaysByUserId(userId:String?):MutableList<SomeDayView>{
 
-        val holidaySource:MutableList<Holiday> = holidayMapper.findAllHolidays()
+        val holidaySource:MutableList<HolidayDO> = holidayMapper.findAllHolidays()
 
         //Holidays
         val dayViews = mutableListOf<SomeDayView>()
@@ -61,7 +61,7 @@ class DayService{
         }
 
         userId?.let{
-            val customDays:MutableList<CustomDay> = customDayMapper.findDayByUserId(Integer.parseInt(userId))
+            val customDays:MutableList<CustomDayDO> = customDayMapper.findDayByUserId(Integer.parseInt(userId))
             customDays.forEach{
                 var viewItem = SomeDayView(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
                 val isInFuture:Boolean = findRemainDays(viewItem)

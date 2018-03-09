@@ -1,7 +1,6 @@
 package me.yxy.mydays.dao.mapper
 
-import me.yxy.mydays.dao.pojo.CustomDay
-import me.yxy.mydays.dao.pojo.User
+import me.yxy.mydays.dao.pojo.UserDO
 import org.apache.ibatis.annotations.*
 
 /**
@@ -11,13 +10,13 @@ import org.apache.ibatis.annotations.*
 public interface UserMapper {
 
     @Select("SELECT * FROM user WHERE state = 1 AND openId = #{openId}")
-    fun findUserIdByOpenId(openId:String):User?
+    fun findUserIdByOpenId(openId:String): UserDO?
 
     @Insert("INSERT INTO user (openId) VALUES (#{openId})")
     @Options(useGeneratedKeys=true, keyProperty="id")
-    fun addOne(user: User)
+    fun addOne(user: UserDO)
 
     @Update("UPDATE user SET lastLoginTime = #{lastLoginTime} WHERE id = #{id}")
-    fun updateUser(user:User)
+    fun updateUser(user: UserDO)
 
 }

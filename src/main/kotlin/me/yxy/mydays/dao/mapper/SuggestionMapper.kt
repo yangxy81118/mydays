@@ -1,7 +1,6 @@
 package me.yxy.mydays.dao.mapper
 
-import me.yxy.mydays.dao.pojo.Suggestion
-import me.yxy.mydays.dao.pojo.User
+import me.yxy.mydays.dao.pojo.SuggestionDO
 import org.apache.ibatis.annotations.*
 
 /**
@@ -11,7 +10,7 @@ import org.apache.ibatis.annotations.*
 public interface SuggestionMapper {
 
     @Select("SELECT * FROM suggestion WHERE id=#{id}")
-    fun findById(id:String):Suggestion?
+    fun findById(id:String): SuggestionDO?
 
     @Select("""
         <script>
@@ -22,6 +21,6 @@ public interface SuggestionMapper {
                 </foreach>
         </script>
             """)
-    fun findByIdList(@Param("sugIds") ids:List<String>):List<Suggestion>
+    fun findByIdList(@Param("sugIds") ids:List<Int>):List<SuggestionDO>
 
 }

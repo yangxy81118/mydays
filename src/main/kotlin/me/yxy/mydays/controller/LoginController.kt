@@ -3,7 +3,7 @@ package me.yxy.mydays.controller
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import me.yxy.mydays.dao.mapper.UserMapper
-import me.yxy.mydays.dao.pojo.User
+import me.yxy.mydays.dao.pojo.UserDO
 import me.yxy.mydays.tools.URLTool
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -39,9 +39,9 @@ class LoginController {
         val wxResponseVO = gson.fromJson(response, WXSessionResponse::class.java)
 
         val openId = wxResponseVO.openId
-        var loginUser: User? = userMapper.findUserIdByOpenId(openId)
+        var loginUser: UserDO? = userMapper.findUserIdByOpenId(openId)
         if (loginUser == null) {
-            loginUser = User()
+            loginUser = UserDO()
             loginUser.openId = openId
             userMapper.addOne(loginUser)
         }else{
