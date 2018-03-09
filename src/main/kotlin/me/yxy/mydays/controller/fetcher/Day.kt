@@ -11,13 +11,19 @@ import org.springframework.stereotype.Repository
  * Day对应的查询处理实现类，这里最好调用特定的service，在后期转为RPC调用，所以fetcher相当于frnt层最后一道关
  */
 @Repository
-class DayFetcher : DataFetcher<SomeDayView> {
+class Day : DataFetcher<SomeDayView> {
 
     @Autowired
     lateinit var dayService:DayService
 
     override fun get(environment: DataFetchingEnvironment):SomeDayView? {
-        return dayService.getSomeDayById(environment.getArgument<Int>("dayId"))
+
+        val dayId:Int = environment.getArgument<Int>("dayId")
+
+        val day: SomeDayView = dayService.getSomeDayById(dayId) ?: return null
+
+        return null
+
     }
 
 

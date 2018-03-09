@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
  * Days对应的查询处理实现类，这里最好调用特定的service，在后期转为RPC调用，所以fetcher相当于frnt层最后一道关
  */
 @Repository
-class DaysFetcher : DataFetcher<MutableList<SomeDayView>> {
+class Days : DataFetcher<MutableList<SomeDayView>> {
 
     @Autowired
     lateinit var dayService:DayService
