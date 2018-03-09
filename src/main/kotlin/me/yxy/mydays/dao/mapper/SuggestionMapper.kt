@@ -21,6 +21,6 @@ public interface SuggestionMapper {
                 </foreach>
         </script>
             """)
-    fun findByIdList(@Param("sugIds") ids:List<Int>):List<SuggestionDO>
+    fun findByIdList(@Param("sugIds") ids:List<Int>):List<SuggestionDO>?
 
 }

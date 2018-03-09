@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select
 public interface HolidayMapper{
 
     @Select("SELECT * FROM holiday WHERE enable = 1")
-    fun findAllHolidays():MutableList<HolidayDO>
+    fun findAllHolidays():List<HolidayDO>
 
     @Select("SELECT * FROM holiday WHERE enable = 1 AND id = #{id}")
     fun findHolidayById(id:Int):HolidayDO?
