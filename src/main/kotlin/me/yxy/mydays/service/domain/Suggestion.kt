@@ -1,3 +1,3 @@
-package me.yxy.mydays.dao.pojo
+package me.yxy.mydays.service.domain
 
-data class SuggestionDO(val id:Int = 0, val content:String = "", val image:String? = null)
+data class Suggestion(val id:Int = 0, val content:String = "", val image:String? = null)
