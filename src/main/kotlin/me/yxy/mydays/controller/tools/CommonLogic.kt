@@ -1,6 +1,6 @@
 package me.yxy.mydays.controller.tools
 
-import me.yxy.mydays.controller.vo.SomeDayView
+import me.yxy.mydays.controller.vo.response.SomeDayView
 import org.joda.time.DateTime
 import org.joda.time.Days
 

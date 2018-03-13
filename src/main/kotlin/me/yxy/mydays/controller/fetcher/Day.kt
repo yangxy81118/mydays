@@ -2,7 +2,7 @@ package me.yxy.mydays.controller.fetcher
 
 import graphql.schema.DataFetchingEnvironment
 import me.yxy.mydays.controller.tools.CommonLogic
-import me.yxy.mydays.controller.vo.SomeDayView
+import me.yxy.mydays.controller.vo.response.SomeDayView
 import me.yxy.mydays.service.CustomDayService
 import me.yxy.mydays.service.HolidayService
 import me.yxy.mydays.service.SuggestionService

@@ -1,4 +1,4 @@
-package me.yxy.mydays.controller.vo
+package me.yxy.mydays.controller.vo.response
 
 import me.yxy.mydays.service.domain.Suggestion
 

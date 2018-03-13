@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 
 /**
- * 健康度检查
+ * GraphQL查询入口，所有GraphQL的相关schema都从这里读取
  */
 @RestController
 @RequestMapping("/graphql")
