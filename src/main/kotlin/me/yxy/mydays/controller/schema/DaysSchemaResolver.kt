@@ -3,6 +3,7 @@ package me.yxy.mydays.controller.schema
 import graphql.schema.idl.RuntimeWiring
 import me.yxy.mydays.controller.fetcher.Day
 import me.yxy.mydays.controller.fetcher.Days
+import me.yxy.mydays.controller.fetcher.DefaultImages
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.core.io.ClassPathResource
@@ -27,6 +28,9 @@ class DaysSchemaResolver : BaseSchemaResolver() {
     @Autowired
     lateinit var dayFetcher: Day
 
+    @Autowired
+    lateinit var defaultImageFetcher:DefaultImages
+
     override fun buildWiringContent(): RuntimeWiring {
 
         //这里最好能够熟悉一下lamada，变成spring 注解模式的方式自动装配dataFetcher
@@ -34,7 +38,8 @@ class DaysSchemaResolver : BaseSchemaResolver() {
                 .type("Query")
                 { typeW -> typeW
                         .dataFetcher("days",daysFetcher)
-                        .dataFetcher("day",dayFetcher)}
+                        .dataFetcher("day",dayFetcher)
+                        .dataFetcher("defaultImages",defaultImageFetcher)}
                 .build()
     }
 

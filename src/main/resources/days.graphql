@@ -5,6 +5,7 @@ schema {
 type Query{
 	days(userId:Int) : [SomeDay]
 	day(dayId:Int) : SomeDay
+	defaultImages(count:Int) : [String]
 }
 
 type SomeDay{
