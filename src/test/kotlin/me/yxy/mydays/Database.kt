@@ -22,13 +22,13 @@ fun main(args: Array<String>) {
     var file = File("E:\\calendar")
     if(file.exists()) file.delete()
 
-    for (i in 1..43800) {
+    for (i in 1..42500) {
 
 
         var chinese = ChineseCalendar(startTime.year, startTime.monthOfYear - 1, startTime.dayOfMonth)
 
         val chineseYear = chinese.getChinese(ChineseCalendar.CHINESE_YEAR)
-        val chineseMonth = chinese.getChinese(ChineseCalendar.CHINESE_MONTH)
+        val chineseMonth = better(chinese.getChinese(ChineseCalendar.CHINESE_MONTH))
         val chineseDay = chinese.getChinese(ChineseCalendar.CHINESE_DATE)
 
         if(lastYear != chineseYear){
@@ -51,4 +51,18 @@ fun main(args: Array<String>) {
 
 
     println("finish!")
+}
+
+fun better(chinese: String?): String {
+    return when(chinese){
+        "十一月" -> {
+            "冬月"
+        }
+        "十二月" -> {
+            "腊月"
+        }
+        else -> {
+            chinese!!
+        }
+    }
 }
