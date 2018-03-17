@@ -11,5 +11,5 @@ data class AddDay(val userId:Int = 0,
                   val name:String = "",
                   val date:String = "",
                   val dateMode:Int = 0,
-                  val favor:Boolean
+                  val favor:Boolean = false
                   )

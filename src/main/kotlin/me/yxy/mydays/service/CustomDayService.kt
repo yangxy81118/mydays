@@ -90,9 +90,8 @@ class CustomDayService {
     }
 
     private fun putNormalDate(daoRequest: CustomDayDO, normalDateStr: String) {
-
         val strArray = normalDateStr.split("-")
-        val y = strArray[0].toInt()
+        val y = 0   //暂时都只做每年的，所以年份均写为0
         val m = strArray[1].toInt()
         val d = strArray[2].toInt()
         daoRequest.year = y
