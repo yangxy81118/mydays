@@ -6,4 +6,10 @@ package me.yxy.mydays.controller.vo.request
  * @param useLunar 是否使用农历
  * @param cycle 是否每年循环
  */
-data class AddDay(val userId:Int = 0,val dayId:Int = 0,val title:String = "",val date:String = "",val useLunar:Boolean,val cycle:Boolean,val image:String = "")
+data class AddDay(val userId:Int = 0,
+                  val dayId:Int = 0,
+                  val name:String = "",
+                  val date:String = "",
+                  val dateMode:Int = 0,
+                  val favor:Boolean
+                  )

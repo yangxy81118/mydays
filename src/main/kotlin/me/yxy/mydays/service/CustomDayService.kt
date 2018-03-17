@@ -4,6 +4,7 @@ import me.yxy.mydays.controller.vo.request.AddDay
 import me.yxy.mydays.dao.mapper.CustomDayMapper
 import me.yxy.mydays.dao.pojo.CustomDayDO
 import me.yxy.mydays.service.domain.SomeDay
+import me.yxy.mydays.tools.CNCalendarStorage
 import me.yxy.mydays.tools.ChineseCalendar
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,6 +14,9 @@ class CustomDayService {
 
     @Autowired
     private lateinit var customDayMapper: CustomDayMapper
+
+    @Autowired
+    private lateinit var cnCalStorage:CNCalendarStorage
 
     /**
      * 获取指定CustomDay
@@ -66,42 +70,34 @@ class CustomDayService {
 
         //拷贝基本属性
         val daoRequest = CustomDayDO()
-        daoRequest.name = addDayReq.title
+        daoRequest.name = addDayReq.name
         daoRequest.userId = addDayReq.userId
 
         //日期处理
-        var (year,month,date) = parseDate(addDayReq.date)
-        var lunarCalendar:ChineseCalendar? = null
         //如果使用农历
-        if(addDayReq.useLunar){
-            lunarCalendar = ChineseCalendar(true,year, month, date)
+        if(addDayReq.dateMode==1){
+            daoRequest.lunar = addDayReq.date
+            //将农历翻译成阳历
+            val normalDateStr = cnCalStorage.getNormalDateFromLunarDate(addDayReq.date)
+            normalDateStr?.let { putNormalDate(daoRequest, it) }
         }else{
             //使用阳历
-            lunarCalendar = ChineseCalendar(year,month-1,date)
+            putNormalDate(daoRequest,addDayReq.date)
         }
-        val lunarComment:String = lunarCalendar.toString().split(" | ").get(2)
-
-        //年循环判断
-        year = if (addDayReq.cycle) 0 else year
-
-        //存储
-        daoRequest.year = year
-        daoRequest.month = month
-        daoRequest.date = date
-        daoRequest.lunar = lunarComment
-        daoRequest.image = "http://oyu60t3s9.bkt.clouddn.com/keyboard.jpg?imageView2/1/w/100/h/100/q/75|imageslim"
 
         customDayMapper.addOne(daoRequest)
 
     }
 
-    private fun parseDate(dayStr: String): TimeParseResult {
-        val strArray = dayStr.split("-")
-        return TimeParseResult(strArray[0].toInt(),strArray[1].toInt(),strArray[2].toInt())
+    private fun putNormalDate(daoRequest: CustomDayDO, normalDateStr: String) {
+
+        val strArray = normalDateStr.split("-")
+        val y = strArray[0].toInt()
+        val m = strArray[1].toInt()
+        val d = strArray[2].toInt()
+        daoRequest.year = y
+        daoRequest.month = m
+        daoRequest.date = d
     }
 
-
-
 }
-
-data class TimeParseResult(val year:Int = 0,val month:Int = 0,val date:Int = 0)

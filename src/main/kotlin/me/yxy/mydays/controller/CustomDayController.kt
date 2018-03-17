@@ -29,7 +29,7 @@ class CustomDayController {
     @PutMapping()
     fun addCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
         customDayService.saveOrUpdate(request)
-        return ResponseEntity.ok("123")
+        return ResponseEntity.ok("ok")
     }
 
 }

@@ -51,11 +51,11 @@ class CNCalendarStorage{
                 }
                 else -> {
                     val info:List<String> = content.split(":")
-                    val dayTitle = encodeDay(info[0])
+                    val dayTitle = encodeDay(info[0]) 
                     recentYear.m += "$dayTitle,"
 
                     //存入map
-                    chineseDateToNormalDate["$recentYearTitle,$recentMonthTitle,${info[0]}"] = info[1]
+                    chineseDateToNormalDate["$recentYearTitle$recentMonthTitle${info[0]}"] = info[1]
                 }
             }
             content = reader.readLine()
@@ -64,6 +64,13 @@ class CNCalendarStorage{
         compressLastYear(recentYear)
 
         println("finish!")
+    }
+
+    /**
+     * 根据农历获取对应的阳历
+     */
+    fun getNormalDateFromLunarDate(cnDateStr:String):String?{
+        return chineseDateToNormalDate[cnDateStr]
     }
 
     /**
