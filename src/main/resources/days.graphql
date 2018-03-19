@@ -14,12 +14,10 @@ type SomeDay{
     year:Int
     month:Int
     date:Int
-    image:String
     remain:Int
     custom:Boolean
-    engName:String
-    brief:String
     lunar:String
+    age:Int
     suggestions:[Suggestion]
 }
 

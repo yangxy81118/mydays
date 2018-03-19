@@ -5,7 +5,8 @@ import me.yxy.mydays.dao.mapper.CustomDayMapper
 import me.yxy.mydays.dao.pojo.CustomDayDO
 import me.yxy.mydays.service.domain.SomeDay
 import me.yxy.mydays.tools.CNCalendarStorage
-import me.yxy.mydays.tools.ChineseCalendar
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -17,6 +18,8 @@ class CustomDayService {
 
     @Autowired
     private lateinit var cnCalStorage:CNCalendarStorage
+
+    private val logger:Logger = LoggerFactory.getLogger(CustomDayService::class.java)
 
     /**
      * 获取指定CustomDay
@@ -55,7 +58,8 @@ class CustomDayService {
         val dayList = mutableListOf<SomeDay>()
         customDaySource?.forEach{
             var day = SomeDay(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
-            day.sugIds = formatSugIds(it.suggestions)
+//            day.sugIds = formatSugIds(it.suggestions)
+            day.favor = it.favor == 1
             dayList.add(day)
         }
 
@@ -66,12 +70,15 @@ class CustomDayService {
     /**
      * 添加或更新，这里暂时偷懒采用controller中的request，严格来说要使用service层的request
      */
-    fun saveOrUpdate(addDayReq:AddDay){
+    fun saveDay(addDayReq:AddDay){
+
+        logger.info("SaveDay,AddDayRequest:{}",addDayReq)
 
         //拷贝基本属性
         val daoRequest = CustomDayDO()
         daoRequest.name = addDayReq.name
         daoRequest.userId = addDayReq.userId
+        daoRequest.favor = if (addDayReq.favor) 1 else 0
 
         //日期处理
         //如果使用农历
@@ -85,18 +92,23 @@ class CustomDayService {
             putNormalDate(daoRequest,addDayReq.date)
         }
 
+        logger.info("Ready Add Day to DB:{}",daoRequest)
         customDayMapper.addOne(daoRequest)
 
     }
 
     private fun putNormalDate(daoRequest: CustomDayDO, normalDateStr: String) {
         val strArray = normalDateStr.split("-")
-        val y = 0   //暂时都只做每年的，所以年份均写为0
+        val y = strArray[0].toInt()   //暂时都只做每年的，所以年份均写为0
         val m = strArray[1].toInt()
         val d = strArray[2].toInt()
         daoRequest.year = y
         daoRequest.month = m
         daoRequest.date = d
+    }
+
+    fun deleteDay(dayId: Int) {
+        customDayMapper.removeOne(dayId)
     }
 
 }

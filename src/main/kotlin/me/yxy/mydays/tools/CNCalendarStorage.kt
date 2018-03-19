@@ -1,5 +1,7 @@
 package me.yxy.mydays.tools
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
@@ -18,13 +20,19 @@ class CNCalendarStorage{
 
     private val PREFIX_MONTH = "MONTH:"
 
+    private val logger: Logger = LoggerFactory.getLogger(CNCalendarStorage::class.java)
+
     /**
-     * 用来存储“农历-实际日期的映射关系”,K-V举例：("1960（己亥年）,腊月,初五"->"1960-1-18")
+     * 用来存储“农历-实际日期的映射关系”,K-V举例：("1960（狗年）,腊月,初五"->"1960-1-18")
      */
     private val chineseDateToNormalDate = mutableMapOf<String,String>()
 
     @PostConstruct
     fun init(){
+
+        logger.info("Start to init ChineseCalendar...")
+
+
         val resource = ClassPathResource("calendar")
         val reader = BufferedReader(InputStreamReader(resource.inputStream))
 
@@ -60,10 +68,10 @@ class CNCalendarStorage{
             }
             content = reader.readLine()
         }
-
         compressLastYear(recentYear)
 
-        println("finish!")
+        logger.info("ChineseCalendar has been loaded completely,days in total:${chineseDateToNormalDate.size}")
+
     }
 
     /**
@@ -181,6 +189,21 @@ class CNCalendarStorage{
                 s
             }
         }
+    }
+
+    /**
+     * 根据“马/狗”等属相查询出是那些年
+     */
+    fun findYearsByCNZODIAC(cnYear: String): List<Int> {
+        val years = mutableListOf<Int>()
+
+        yearList.forEach {
+           if(it.y.contains(cnYear)){
+               years.add(it.y.substring(0,4).toInt())
+           }
+        }
+
+        return years
     }
 
 }

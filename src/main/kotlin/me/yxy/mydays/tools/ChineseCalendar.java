@@ -320,7 +320,8 @@ public final class ChineseCalendar extends GregorianCalendar {
     }
 
     public String getChineseDateString() {
-        return new StringBuffer().append(getChinese(CHINESE_YEAR))
+        return new StringBuffer()
+                .append(getChinese(CHINESE_ZODIAC)).append("年")
                 .append(getChinese(CHINESE_MONTH))
                 .append(getChinese(CHINESE_DATE)).toString();
     }
@@ -330,7 +331,6 @@ public final class ChineseCalendar extends GregorianCalendar {
         buf.append(getSimpleGregorianDateString()).append(" | ")
                 .append(getChinese(DAY_OF_WEEK)).append(" | [农历]")
                 .append(getChineseDateString()).append(" ")
-                .append(getChinese(CHINESE_ZODIAC)).append("年 ")
                 .append(get(CHINESE_SECTIONAL_TERM)).append("日")
                 .append(getChinese(CHINESE_SECTIONAL_TERM)).append(" ")
                 .append(get(CHINESE_PRINCIPLE_TERM)).append("日")

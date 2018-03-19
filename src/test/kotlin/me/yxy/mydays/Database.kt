@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 
         var chinese = ChineseCalendar(startTime.year, startTime.monthOfYear - 1, startTime.dayOfMonth)
 
-        val chineseYear = chinese.getChinese(ChineseCalendar.CHINESE_YEAR)
+        val chineseYear = chinese.getChinese(ChineseCalendar.CHINESE_ZODIAC)+"年"
         val chineseMonth = better(chinese.getChinese(ChineseCalendar.CHINESE_MONTH))
         val chineseDay = chinese.getChinese(ChineseCalendar.CHINESE_DATE)
 

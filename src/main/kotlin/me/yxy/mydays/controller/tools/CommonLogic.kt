@@ -17,27 +17,24 @@ object CommonLogic {
     fun checkAndfindRemainDays(viewItem: SomeDayView) : Boolean {
 
         val now: DateTime = DateTime.now()
-        var year:Int = now.year
+        var yearOfNextTargetDay:Int = now.year
 
-        val dayTemp: DateTime = DateTime(year,viewItem.month,viewItem.date,0,0,0)
-        //如果晚于当前时间，则不需要+1
+        val birthYear = viewItem.year
 
-        if(viewItem.year!=0){
-            year = viewItem.year
-        }else{
-            if(dayTemp.isBeforeNow) year++
-            viewItem.year = year
-        }
+        val dayTemp = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
 
+        if(dayTemp.isBeforeNow) yearOfNextTargetDay++
 
-        val dayTime = DateTime(year,viewItem.month,viewItem.date,0,0,0)
+        val dayTime = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
         viewItem.remain = Days.daysBetween(now,dayTime).days
+        viewItem.age =  yearOfNextTargetDay - birthYear
 
         if(viewItem.remain < 0){
             return false
         }
 
         if(viewItem.remain > 365) viewItem.remain -= 365
+
         return true
     }
 }

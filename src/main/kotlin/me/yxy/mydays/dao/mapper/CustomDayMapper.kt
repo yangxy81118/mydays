@@ -16,8 +16,8 @@ public interface CustomDayMapper {
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
 
     @Insert("""
-        INSERT INTO custom_days (userId,name,year,month,date,image,lunar)
-         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar})
+        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor)
+         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor})
         """)
     fun addOne(day:CustomDayDO)
 

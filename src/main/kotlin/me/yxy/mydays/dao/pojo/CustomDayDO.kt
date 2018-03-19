@@ -13,4 +13,5 @@ data class CustomDayDO(var id:Int = 0,
                        var engName:String = "",
                        var brief:String = "",
                        var lunar:String = "",
-                       var suggestions:String? = null)
+                       var suggestions:String? = null,
+                       var favor:Int = 0)

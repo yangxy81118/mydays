@@ -4,6 +4,8 @@ import me.yxy.mydays.service.domain.Suggestion
 
 /**
  * 页面展示某一天数据
+ *
+ * @param age 年龄
  */
 data class SomeDayView(var id:Int = 0,
                    var name:String = "",
@@ -16,4 +18,6 @@ data class SomeDayView(var id:Int = 0,
                        var lunar:String = "",
                    var remain:Int = 0,
                    var custom:Boolean = false,
-                   var suggestions:List<Suggestion> = listOf())
+                   var suggestions:List<Suggestion> = listOf(),
+                       var favor:Boolean = false,
+                       var age:Int = 0)

@@ -9,4 +9,5 @@ data class SomeDay(val id:Int = 0,
                      val engName:String = "",
                      val brief:String = "",
                      val lunar:String = "",
-                     var sugIds:List<Int>? = null)
+                     var sugIds:List<Int>? = null,
+                     var favor:Boolean = false)
