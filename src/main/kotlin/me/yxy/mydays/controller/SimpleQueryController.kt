@@ -1,11 +1,15 @@
 package me.yxy.mydays.controller
 
+import me.yxy.mydays.service.CustomDayService
 import me.yxy.mydays.tools.CNCalendarStorage
 import me.yxy.mydays.tools.ChineseCalendar
 import me.yxy.mydays.tools.ChineseYear
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.net.URLDecoder
 
 
 /**
@@ -18,6 +22,8 @@ class SimpleQueryController {
     @Autowired
     private lateinit var calanderStorage:CNCalendarStorage
 
+    private val logger: Logger = LoggerFactory.getLogger(SimpleQueryController::class.java)
+
     @CrossOrigin
     @GetMapping("/lunar")
     fun getChineseCalendar():ResponseEntity<List<ChineseYear>>{
@@ -28,6 +34,8 @@ class SimpleQueryController {
     @CrossOrigin
     @GetMapping("/lunar/normalTolunar")
     fun getLunarByNormalDate(@RequestParam("date") date:String):String{
+
+        logger.info("normalTolunar:$date")
 
         //首先根据阳历，获取农历的描述
         val (normalYear,normalMonth,normalDay) = parseNormalDate(date)
@@ -65,7 +73,9 @@ class SimpleQueryController {
     @CrossOrigin
     @GetMapping("/lunar/lunarToNormal")
     fun getNormalFromLunar(@RequestParam("date") date:String):String{
-        return calanderStorage.getNormalDateFromLunarDate(date) ?: ""
+        val decodedTime = URLDecoder.decode(date,"UTF-8")
+        logger.info("lunarToNormal:$decodedTime")
+        return calanderStorage.getNormalDateFromLunarDate(decodedTime) ?: ""
     }
 
 
