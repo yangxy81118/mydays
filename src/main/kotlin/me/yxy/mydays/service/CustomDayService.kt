@@ -87,10 +87,16 @@ class CustomDayService {
         if(addDayReq.dateMode==1){
             daoRequest.lunar = addDayReq.date
 
+            val pastYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(daoRequest.lunar)
+
             //由于出生当年对应的阳历会与今年/明年不同，所以获取到的“月，日”，必须按照今年/明年的来处理
             val recentLunarBirthday = getRecentLunarBirthday(addDayReq.date)
             val normalDateStr = cnCalStorage.getNormalDateFromLunarDate(recentLunarBirthday)
-            normalDateStr?.let { putNormalDate(daoRequest, it) }
+
+            //年份要转换回来，因为要算年岁
+            val temp = normalDateStr.split("-")
+            val finalDateStr = pastYearNormalDate.split("-")[0] + "-"+temp[1]+"-"+temp[2]
+            finalDateStr?.let { putNormalDate(daoRequest, it) }
         }else{
             //使用阳历
             putNormalDate(daoRequest,addDayReq.date)
@@ -139,7 +145,7 @@ class CustomDayService {
 
     private fun putNormalDate(daoRequest: CustomDayDO, normalDateStr: String) {
         val strArray = normalDateStr.split("-")
-        val y = strArray[0].toInt()   //暂时都只做每年的，所以年份均写为0
+        val y = strArray[0].toInt()
         val m = strArray[1].toInt()
         val d = strArray[2].toInt()
         daoRequest.year = y

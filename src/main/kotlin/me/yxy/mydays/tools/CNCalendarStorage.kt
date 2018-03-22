@@ -77,8 +77,8 @@ class CNCalendarStorage{
     /**
      * 根据农历获取对应的阳历
      */
-    fun getNormalDateFromLunarDate(cnDateStr:String):String?{
-        return chineseDateToNormalDate[cnDateStr]
+    fun getNormalDateFromLunarDate(cnDateStr:String):String{
+        return chineseDateToNormalDate[cnDateStr]?:""
     }
 
     /**
