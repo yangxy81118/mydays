@@ -5,6 +5,8 @@ import me.yxy.mydays.dao.mapper.CustomDayMapper
 import me.yxy.mydays.dao.pojo.CustomDayDO
 import me.yxy.mydays.service.domain.SomeDay
 import me.yxy.mydays.tools.CNCalendarStorage
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,8 +54,8 @@ class CustomDayService {
     /**
      * 获取指定用户所有有效CustomDay
      */
-    fun getCustomDaysByUserId(userId:Int):List<SomeDay>{
-        val customDaySource: MutableList<CustomDayDO>? = customDayMapper.findDayByUserId(userId)
+    fun getCustomDaysByUserId(request:CustomDayReqeust):List<SomeDay>{
+        val customDaySource: MutableList<CustomDayDO>? = customDayMapper.findDayByUserId(request.userId,request.isFavor)
 
         val dayList = mutableListOf<SomeDay>()
         customDaySource?.forEach{
@@ -84,8 +86,10 @@ class CustomDayService {
         //如果使用农历
         if(addDayReq.dateMode==1){
             daoRequest.lunar = addDayReq.date
-            //将农历翻译成阳历
-            val normalDateStr = cnCalStorage.getNormalDateFromLunarDate(addDayReq.date)
+
+            //由于出生当年对应的阳历会与今年/明年不同，所以获取到的“月，日”，必须按照今年/明年的来处理
+            val recentLunarBirthday = getRecentLunarBirthday(addDayReq.date)
+            val normalDateStr = cnCalStorage.getNormalDateFromLunarDate(recentLunarBirthday)
             normalDateStr?.let { putNormalDate(daoRequest, it) }
         }else{
             //使用阳历
@@ -94,6 +98,42 @@ class CustomDayService {
 
         logger.info("Ready Add Day to DB:{}",daoRequest)
         customDayMapper.addOne(daoRequest)
+
+    }
+
+    private fun getRecentLunarBirthday(date: String): String {
+
+        val thisYear:Int = DateTime.now().year
+
+        var thisYearLunarStr = ""
+
+        //首先去获取今年的阳历
+        cnCalStorage.yearList.forEach {
+            if(it.y.startsWith(thisYear.toString())){
+                thisYearLunarStr = it.y
+            }
+        }
+
+        thisYearLunarStr += date.substring(date.indexOf("）")+1)
+
+        val thisYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(thisYearLunarStr)
+
+        //如果今年的日期已经过了今天的，那就直接算明年的了
+        if(DateTimeFormat.forPattern("yyyy-MM-dd")
+                .parseDateTime(thisYearNormalDate).plusDays(1).isBeforeNow){
+
+            var nextYearLunarStr = ""
+            cnCalStorage.yearList.forEach {
+                if(it.y.startsWith((thisYear+1).toString())){
+                    nextYearLunarStr = it.y
+                }
+            }
+
+            nextYearLunarStr += date.substring(date.indexOf("）")+1)
+            return nextYearLunarStr
+        }
+
+        return thisYearLunarStr
 
     }
 
@@ -112,3 +152,6 @@ class CustomDayService {
     }
 
 }
+
+/** 用户自定义日期通用查询Request */
+data class CustomDayReqeust(val userId:Int = 0, val isFavor:Boolean = false)

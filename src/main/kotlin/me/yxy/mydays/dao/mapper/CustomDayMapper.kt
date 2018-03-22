@@ -9,8 +9,16 @@ import org.apache.ibatis.annotations.*
 @Mapper
 public interface CustomDayMapper {
 
-    @Select("SELECT * FROM custom_days WHERE enable = 1 AND userId = #{userId}")
-    fun findDayByUserId(@Param("userId") userId:Int):MutableList<CustomDayDO>?
+    @Select("""
+            <script>
+                SELECT * FROM custom_days
+                WHERE enable = 1 AND userId = #{userId}
+                <if test="favor">
+                    AND favor = 1
+                </if>
+            </script>
+            """)
+    fun findDayByUserId(@Param("userId") userId:Int,@Param("favor") favor:Boolean = false):MutableList<CustomDayDO>?
 
     @Select("SELECT * FROM custom_days WHERE enable = 1 AND id = #{dayId}")
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
