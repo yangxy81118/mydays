@@ -33,6 +33,7 @@ class CustomDayService {
         customDay?.let{
             var day = SomeDay(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
             day.sugIds = formatSugIds(it.suggestions)
+            day.favor = it.favor == 1
             return day
         }
 
@@ -72,25 +73,25 @@ class CustomDayService {
     /**
      * 添加或更新，这里暂时偷懒采用controller中的request，严格来说要使用service层的request
      */
-    fun saveDay(addDayReq:AddDay){
+    fun saveOrUpdateDay(dayReq:AddDay){
 
-        logger.info("SaveDay,AddDayRequest:{}",addDayReq)
+        logger.info("SaveDay,AddDayRequest:{}", dayReq)
 
         //拷贝基本属性
         val daoRequest = CustomDayDO()
-        daoRequest.name = addDayReq.name
-        daoRequest.userId = addDayReq.userId
-        daoRequest.favor = if (addDayReq.favor) 1 else 0
+        daoRequest.name = dayReq.name
+        daoRequest.userId = dayReq.userId
+        daoRequest.favor = if (dayReq.favor) 1 else 0
 
         //日期处理
         //如果使用农历
-        if(addDayReq.dateMode==1){
-            daoRequest.lunar = addDayReq.date
+        if(dayReq.dateMode==1){
+            daoRequest.lunar = dayReq.date
 
             val pastYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(daoRequest.lunar)
 
             //由于出生当年对应的阳历会与今年/明年不同，所以获取到的“月，日”，必须按照今年/明年的来处理
-            val recentLunarBirthday = getRecentLunarBirthday(addDayReq.date)
+            val recentLunarBirthday = getRecentLunarBirthday(dayReq.date)
             val normalDateStr = cnCalStorage.getNormalDateFromLunarDate(recentLunarBirthday)
 
             //年份要转换回来，因为要算年岁
@@ -99,18 +100,25 @@ class CustomDayService {
             finalDateStr?.let { putNormalDate(daoRequest, it) }
         }else{
             //使用阳历
-            putNormalDate(daoRequest,addDayReq.date)
+            putNormalDate(daoRequest, dayReq.date)
         }
 
-        logger.info("Ready Add Day to DB:{}",daoRequest)
-        customDayMapper.addOne(daoRequest)
+
+        //如果addDayReq有id，则说明是更新
+        if(dayReq.dayId > 0){
+            daoRequest.id = dayReq.dayId
+            logger.info("Ready Update Day to DB;{}",daoRequest)
+            customDayMapper.updateOne(daoRequest)
+        }else{
+            logger.info("Ready Add Day to DB:{}",daoRequest)
+            customDayMapper.addOne(daoRequest)
+        }
 
     }
 
     private fun getRecentLunarBirthday(date: String): String {
 
         val thisYear:Int = DateTime.now().year
-
         var thisYearLunarStr = ""
 
         //首先去获取今年的阳历

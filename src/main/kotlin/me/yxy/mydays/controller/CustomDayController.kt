@@ -24,10 +24,17 @@ class CustomDayController {
     @CrossOrigin
     @PutMapping()
     fun addCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
-        customDayService.saveDay(request)
+        customDayService.saveOrUpdateDay(request)
         return ResponseEntity.ok("ok")
     }
 
+
+    @CrossOrigin
+    @PostMapping()
+    fun updateCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
+        customDayService.saveOrUpdateDay(request)
+        return ResponseEntity.ok("ok")
+    }
 
 
     @CrossOrigin

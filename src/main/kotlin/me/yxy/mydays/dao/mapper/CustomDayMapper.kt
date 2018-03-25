@@ -46,11 +46,14 @@ public interface CustomDayMapper {
                 <if test="date!=null">
                     date = #{date},
                 </if>
-                <if test="image!=null">
-                    image = #{image},
+                <if test="lunar!=null">
+                    lunar = #{lunar},
+                </if>
+                <if test="favor!=null">
+                    favor = #{favor},
                 </if>
             </set>
-            WHERE id = #{dayId}
+            WHERE id = #{id}
         </script>
         """)
     fun updateOne(day:CustomDayDO)
