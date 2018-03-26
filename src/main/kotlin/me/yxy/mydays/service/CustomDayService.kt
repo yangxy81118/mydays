@@ -73,7 +73,7 @@ class CustomDayService {
     /**
      * 添加或更新，这里暂时偷懒采用controller中的request，严格来说要使用service层的request
      */
-    fun saveOrUpdateDay(dayReq:AddDay){
+    fun saveOrUpdateDay(dayReq:AddDay):Int?{
 
         logger.info("SaveDay,AddDayRequest:{}", dayReq)
 
@@ -109,9 +109,11 @@ class CustomDayService {
             daoRequest.id = dayReq.dayId
             logger.info("Ready Update Day to DB;{}",daoRequest)
             customDayMapper.updateOne(daoRequest)
+            return null
         }else{
             logger.info("Ready Add Day to DB:{}",daoRequest)
             customDayMapper.addOne(daoRequest)
+            return daoRequest.id
         }
 
     }
@@ -163,6 +165,13 @@ class CustomDayService {
 
     fun deleteDay(dayId: Int) {
         customDayMapper.removeOne(dayId)
+    }
+
+    fun countForUser(request: CustomDayReqeust): Int {
+        val daoRequst = CustomDayDO()
+        daoRequst.favor = if (request.isFavor) 1 else 0
+        daoRequst.userId = request.userId
+        return customDayMapper.countForUser(daoRequst)
     }
 
 }

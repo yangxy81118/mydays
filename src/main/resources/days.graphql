@@ -6,6 +6,7 @@ type Query{
 	days(userId:Int,favor:Boolean) : [SomeDay]
 	day(dayId:Int) : SomeDay
 	defaultImages(count:Int) : [String]
+    user(userId:Int!):User
 }
 
 type SomeDay{
@@ -14,7 +15,7 @@ type SomeDay{
     year:Int
     month:Int
     date:Int
-    remain:Int
+    remain:String
     custom:Boolean
     lunar:String
     age:Int
@@ -27,5 +28,13 @@ type Suggestion{
     id:Int
     content:String
     image:String
+}
+
+type User{
+    id:Int,
+    createTime:String,
+    lastLoginTime:String,
+    limit:Int
+    daysCount:Int
 }
 

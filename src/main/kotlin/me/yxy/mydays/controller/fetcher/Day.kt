@@ -33,7 +33,7 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
         val dayId:Int = environment.getArgument<Int>("dayId")
 
         //首先获取Day基本信息
-        var day:SomeDay? = null
+        var day: SomeDay?
         if(dayId < 100000){
             day = holidayService.getHolidayById(dayId)
         }else{

@@ -12,6 +12,9 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE state = 1 AND openId = #{openId}")
     fun findUserIdByOpenId(openId:String): UserDO?
 
+    @Select("SELECT * FROM user WHERE state = 1 AND id = #{id}")
+    fun findById(userId:Int): UserDO?
+
     @Insert("INSERT INTO user (openId) VALUES (#{openId})")
     @Options(useGeneratedKeys=true, keyProperty="id")
     fun addOne(user: UserDO)

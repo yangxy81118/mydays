@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*
  * 用户自定义日期DAO接口
  */
 @Mapper
-public interface CustomDayMapper {
+interface CustomDayMapper {
 
     @Select("""
             <script>
@@ -20,6 +20,20 @@ public interface CustomDayMapper {
             """)
     fun findDayByUserId(@Param("userId") userId:Int,@Param("favor") favor:Boolean = false):MutableList<CustomDayDO>?
 
+    /**
+     * 查询数量
+     */
+    @Select("""
+            <script>
+                SELECT ifnull(count(1),0) FROM custom_days
+                WHERE enable = 1 AND userId = #{userId}
+                <if test="favor">
+                    AND favor = 1
+                </if>
+            </script>
+            """)
+    fun countForUser(day:CustomDayDO):Int
+
     @Select("SELECT * FROM custom_days WHERE enable = 1 AND id = #{dayId}")
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
 
@@ -27,6 +41,7 @@ public interface CustomDayMapper {
         INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor)
          VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor})
         """)
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     fun addOne(day:CustomDayDO)
 
 

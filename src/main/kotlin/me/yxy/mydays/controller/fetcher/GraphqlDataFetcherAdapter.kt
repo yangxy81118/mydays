@@ -9,7 +9,7 @@ abstract class GraphqlDataFetcherAdapter<T> : DataFetcher<T> {
 
     protected fun fieldIsSelected(context:DataFetchingEnvironment,fieldName:String) : Boolean{
        val selectionField:List<Field>? = context.selectionSet.get()[fieldName]
-       return ObjectUtils.isEmpty(selectionField)
+       return !ObjectUtils.isEmpty(selectionField)
     }
 
 }

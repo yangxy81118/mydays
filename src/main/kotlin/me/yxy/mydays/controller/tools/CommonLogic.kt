@@ -29,11 +29,12 @@ object CommonLogic {
         viewItem.remain = Days.daysBetween(now,dayTime).days
         viewItem.age =  yearOfNextTargetDay - birthYear
 
-        if(viewItem.remain < 0){
+        //-1表示是今天
+        if(viewItem.remain < -1){
             return false
         }
 
-        if(viewItem.remain > 365) viewItem.remain -= 365
+//        if(viewItem.remain > 365) viewItem.remain -= 365
 
         return true
     }

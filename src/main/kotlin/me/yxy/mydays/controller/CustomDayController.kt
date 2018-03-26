@@ -24,8 +24,11 @@ class CustomDayController {
     @CrossOrigin
     @PutMapping()
     fun addCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
-        customDayService.saveOrUpdateDay(request)
-        return ResponseEntity.ok("ok")
+        var newId:Int? = customDayService.saveOrUpdateDay(request)
+        newId?.let {
+            return ResponseEntity.ok(newId.toString())
+        }
+        return ResponseEntity.ok("0")
     }
 
 
