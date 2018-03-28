@@ -17,9 +17,6 @@ import org.springframework.stereotype.Repository
 class Days : GraphqlDataFetcherAdapter<MutableList<SomeDayView>>() {
 
     @Autowired
-    lateinit var holidayService: HolidayService
-
-    @Autowired
     lateinit var customDayService: CustomDayService
 
     override fun get(environment: DataFetchingEnvironment):MutableList<SomeDayView> {

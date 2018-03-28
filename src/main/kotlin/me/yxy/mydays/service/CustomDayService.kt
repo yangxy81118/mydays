@@ -31,9 +31,10 @@ class CustomDayService {
         val customDay: CustomDayDO? = customDayMapper.findDayId(dayId)
 
         customDay?.let{
-            var day = SomeDay(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
-            day.sugIds = formatSugIds(it.suggestions)
-            day.favor = it.favor == 1
+            var day = SomeDay(it.id,it.name,
+                    it.year,it.month,it.date,it.image,
+                    it.engName,it.brief,it.lunar,null,it.favor==1,customDay.comment)
+//            day.sugIds = formatSugIds(it.suggestions)
             return day
         }
 
@@ -81,6 +82,7 @@ class CustomDayService {
         val daoRequest = CustomDayDO()
         daoRequest.name = dayReq.name
         daoRequest.userId = dayReq.userId
+        daoRequest.comment = dayReq.comment
         daoRequest.favor = if (dayReq.favor) 1 else 0
 
         //日期处理

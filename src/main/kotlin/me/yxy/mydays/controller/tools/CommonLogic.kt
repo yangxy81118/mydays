@@ -3,6 +3,7 @@ package me.yxy.mydays.controller.tools
 import me.yxy.mydays.controller.vo.response.SomeDayView
 import org.joda.time.DateTime
 import org.joda.time.Days
+import org.joda.time.Hours
 
 
 /**
@@ -21,12 +22,21 @@ object CommonLogic {
 
         val birthYear = viewItem.year
 
-        val dayTemp = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
-
+        var dayTemp = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
+        dayTemp = dayTemp.plusDays(1)
         if(dayTemp.isBeforeNow) yearOfNextTargetDay++
 
+//        if(now.dayOfMonth == viewItem.date)
+
+
         val dayTime = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
-        viewItem.remain = Days.daysBetween(now,dayTime).days
+        val hoursOffset = Hours.hoursBetween(now,dayTime).hours
+        if(hoursOffset < 0){
+            viewItem.remain = -1
+        }else{
+            viewItem.remain = Days.daysBetween(now,dayTime).days
+        }
+
         viewItem.age =  yearOfNextTargetDay - birthYear
 
         //-1表示是今天

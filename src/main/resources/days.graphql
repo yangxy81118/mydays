@@ -21,6 +21,7 @@ type SomeDay{
     age:Int
     favor:Boolean
     suggestions:[Suggestion]
+    comment:String
 }
 
 

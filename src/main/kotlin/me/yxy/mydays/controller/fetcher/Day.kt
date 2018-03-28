@@ -52,7 +52,7 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
         //监测，如果有需要获取suggestion信息，则往下走一步
         if(!fieldIsSelected(environment,"suggestions")){
             if(!ObjectUtils.isEmpty(day.sugIds)){
-                dayView.suggestions  = suggestionService.getSuggestionByIds(day.sugIds!!)
+//                dayView.suggestions  = suggestionService.getSuggestionByIds(day.sugIds!!)
             }
         }
 

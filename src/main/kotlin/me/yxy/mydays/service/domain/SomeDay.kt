@@ -10,4 +10,5 @@ data class SomeDay(val id:Int = 0,
                      val brief:String = "",
                      val lunar:String = "",
                      var sugIds:List<Int>? = null,
-                     var favor:Boolean = false)
+                     var favor:Boolean = false,
+                     var comment:String = "")

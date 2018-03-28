@@ -1,7 +1,5 @@
 package me.yxy.mydays.controller.vo.response
 
-import me.yxy.mydays.service.domain.Suggestion
-
 /**
  * 页面展示某一天数据
  *
@@ -14,10 +12,9 @@ data class SomeDayView(var id:Int = 0,
                    var date:Int = 0,
                    var image:String = "",
                    var engName:String = "",
-                       var brief:String = "",
-                       var lunar:String = "",
+                   var brief:String = "",
+                   var lunar:String = "",
                    var remain:Int = 0,
                    var custom:Boolean = false,
-                   var suggestions:List<Suggestion> = listOf(),
-                       var favor:Boolean = false,
-                       var age:Int = 0)
+                   var favor:Boolean = false,
+                   var age:Int = 0,var comment:String = "")

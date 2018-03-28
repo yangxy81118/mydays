@@ -38,8 +38,8 @@ interface CustomDayMapper {
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
 
     @Insert("""
-        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor)
-         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor})
+        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor,comment)
+         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor},#{comment})
         """)
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     fun addOne(day:CustomDayDO)
@@ -66,6 +66,9 @@ interface CustomDayMapper {
                 </if>
                 <if test="favor!=null">
                     favor = #{favor},
+                </if>
+                <if test="comment!=null">
+                    comment = #{comment},
                 </if>
             </set>
             WHERE id = #{id}
