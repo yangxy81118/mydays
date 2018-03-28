@@ -20,15 +20,8 @@ type SomeDay{
     lunar:String
     age:Int
     favor:Boolean
-    suggestions:[Suggestion]
+    greeting:String
     comment:String
-}
-
-
-type Suggestion{
-    id:Int
-    content:String
-    image:String
 }
 
 type User{

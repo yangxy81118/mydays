@@ -4,6 +4,7 @@ import graphql.schema.DataFetchingEnvironment
 import me.yxy.mydays.controller.tools.CommonLogic
 import me.yxy.mydays.controller.vo.response.SomeDayView
 import me.yxy.mydays.service.CustomDayService
+import me.yxy.mydays.service.GreetingService
 import me.yxy.mydays.service.HolidayService
 import me.yxy.mydays.service.SuggestionService
 import me.yxy.mydays.service.domain.SomeDay
@@ -25,7 +26,7 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
     lateinit var customDayService:CustomDayService
 
     @Autowired
-    lateinit var suggestionService: SuggestionService
+    lateinit var greetingService:GreetingService
 
 
     override fun get(environment: DataFetchingEnvironment): SomeDayView? {
@@ -50,10 +51,8 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
         CommonLogic.checkAndfindRemainDays(dayView)
 
         //监测，如果有需要获取suggestion信息，则往下走一步
-        if(!fieldIsSelected(environment,"suggestions")){
-            if(!ObjectUtils.isEmpty(day.sugIds)){
-//                dayView.suggestions  = suggestionService.getSuggestionByIds(day.sugIds!!)
-            }
+        if(fieldIsSelected(environment,"greeting")){
+            dayView.greeting = greetingService.getRandomGreeting()
         }
 
         return dayView

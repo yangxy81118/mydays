@@ -20,7 +20,6 @@ class GraphController {
 
     @PostMapping("/days")
     fun daysHanlder(@RequestBody query:String): ResponseEntity<ExecutionResult> {
-        println("GraphQL:$query")
         val result:ExecutionResult = daysSchemaResolver.graphQL.execute(query)
         return ResponseEntity(result, HttpStatus.OK)
     }

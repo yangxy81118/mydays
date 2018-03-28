@@ -26,9 +26,6 @@ object CommonLogic {
         dayTemp = dayTemp.plusDays(1)
         if(dayTemp.isBeforeNow) yearOfNextTargetDay++
 
-//        if(now.dayOfMonth == viewItem.date)
-
-
         val dayTime = DateTime(yearOfNextTargetDay,viewItem.month,viewItem.date,0,0,0)
         val hoursOffset = Hours.hoursBetween(now,dayTime).hours
         if(hoursOffset < 0){
