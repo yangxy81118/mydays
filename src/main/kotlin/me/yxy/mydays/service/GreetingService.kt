@@ -29,9 +29,8 @@ class GreetingService {
         reload()
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     fun reload() {
-        logger.info("Greeting Reload Start")
         greetings = greetingMapper.findAll()
         logger.info("Greeting Reload Finish, size is ${greetings.size}")
     }

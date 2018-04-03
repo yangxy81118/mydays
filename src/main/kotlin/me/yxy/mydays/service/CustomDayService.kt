@@ -76,8 +76,6 @@ class CustomDayService {
      */
     fun saveOrUpdateDay(dayReq:AddDay):Int?{
 
-        logger.info("SaveDay,AddDayRequest:{}", dayReq)
-
         //拷贝基本属性
         val daoRequest = CustomDayDO()
         daoRequest.name = dayReq.name

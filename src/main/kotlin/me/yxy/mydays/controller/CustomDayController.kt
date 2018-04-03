@@ -24,6 +24,7 @@ class CustomDayController {
     @CrossOrigin
     @PutMapping()
     fun addCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
+        logger.info("Add Day : $request")
         var newId:Int? = customDayService.saveOrUpdateDay(request)
         newId?.let {
             return ResponseEntity.ok(newId.toString())
@@ -35,6 +36,7 @@ class CustomDayController {
     @CrossOrigin
     @PostMapping()
     fun updateCustomDay(@RequestBody request: AddDay): ResponseEntity<String> {
+        logger.info("Update Day : $request")
         customDayService.saveOrUpdateDay(request)
         return ResponseEntity.ok("ok")
     }
@@ -43,10 +45,9 @@ class CustomDayController {
     @CrossOrigin
     @DeleteMapping()
     fun deleteDay(@RequestParam("dayId") dayId:Int): ResponseEntity<String> {
-
         logger.info("Delete Day,dayId:$dayId")
-        //TODO 这里首先要通过token校验用户的登陆信息，通过token获取到对应的userId，然后userId与dayId进行匹配，不允许操作非用户自身的数据
 
+        //TODO 这里首先要通过token校验用户的登陆信息，通过token获取到对应的userId，然后userId与dayId进行匹配，不允许操作非用户自身的数据
         customDayService.deleteDay(dayId)
         return ResponseEntity.ok("ok")
     }
