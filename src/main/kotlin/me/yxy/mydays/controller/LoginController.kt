@@ -2,9 +2,14 @@ package me.yxy.mydays.controller
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import me.yxy.mydays.controller.vo.request.UserReq
 import me.yxy.mydays.dao.mapper.UserMapper
 import me.yxy.mydays.dao.pojo.UserDO
+import me.yxy.mydays.service.CustomDayService
+import me.yxy.mydays.service.UserService
 import me.yxy.mydays.tools.URLTool
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,6 +32,11 @@ class LoginController {
     @Autowired
     lateinit var userMapper:UserMapper
 
+    @Autowired
+    lateinit var userService: UserService
+
+    private val logger: Logger = LoggerFactory.getLogger(LoginController::class.java)
+
     @CrossOrigin
     @GetMapping("/login")
     fun queryUserId(@RequestParam(value = "code") code: String): Int {
@@ -40,16 +50,18 @@ class LoginController {
 
         val openId = wxResponseVO.openId
         var loginUser: UserDO? = userMapper.findUserIdByOpenId(openId)
+
         if (loginUser == null) {
-            loginUser = UserDO()
-            loginUser.openId = openId
-            userMapper.addOne(loginUser)
+            var req = UserReq(0,openId,"","")
+            var newUserId = userService.addUser(req)
+            logger.info("欢迎新用户:userId:$newUserId,openId:$openId")
+            return newUserId
         }else{
             loginUser.lastLoginTime = Date()
             userMapper.updateUser(loginUser)
+            return loginUser.id
         }
 
-        return loginUser.id
     }
 
 }

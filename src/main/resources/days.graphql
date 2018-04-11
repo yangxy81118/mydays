@@ -30,5 +30,8 @@ type User{
     lastLoginTime:String,
     limit:Int
     daysCount:Int
+    nickName:String
+    avatarUrl:String
+    invitedCount:Int
 }
 

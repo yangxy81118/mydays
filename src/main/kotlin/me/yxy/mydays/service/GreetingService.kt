@@ -2,6 +2,7 @@ package me.yxy.mydays.service
 
 import me.yxy.mydays.dao.mapper.GreetingMapper
 import me.yxy.mydays.dao.pojo.GreetingDO
+import me.yxy.mydays.tools.UserConfiguration
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

@@ -38,8 +38,8 @@ interface CustomDayMapper {
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
 
     @Insert("""
-        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor,comment)
-         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor},#{comment})
+        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor,comment,creatorId)
+         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor},#{comment},#{creatorId})
         """)
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     fun addOne(day:CustomDayDO)
@@ -70,6 +70,9 @@ interface CustomDayMapper {
                 <if test="comment!=null">
                     comment = #{comment},
                 </if>
+                <if test="lastModifiedTime!=null">
+                    lastModifiedTime = #{lastModifiedTime},
+                </if>
             </set>
             WHERE id = #{id}
         </script>
@@ -80,4 +83,9 @@ interface CustomDayMapper {
     @Update("UPDATE custom_days SET enable = 0 WHERE id = #{id}")
     fun removeOne(id:Int)
 
+    @Select("""
+        SELECT count(1) FROM
+        (SELECT DISTINCT creatorId FROM custom_days WHERE userId = #{ownerId} AND enable = 1 AND creatorId != #{ownerId}) a
+        """)
+    fun countInvited(@Param("ownerId") ownerId:Int):Int
 }
