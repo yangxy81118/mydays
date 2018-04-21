@@ -279,6 +279,10 @@ class CustomDayService {
 
     }
 
+    fun countContributeForSomeone(contributorId:Int,ownerId:Int):Int{
+        return customDayMapper.countContributeForSomeone(contributorId,ownerId)
+    }
+
 }
 
 /** 用户自定义日期通用查询Request */

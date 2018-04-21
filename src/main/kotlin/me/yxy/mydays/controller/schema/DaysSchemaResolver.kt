@@ -32,6 +32,9 @@ class DaysSchemaResolver : BaseSchemaResolver() {
     @Autowired
     lateinit var userFetcher:UserFetcher
 
+    @Autowired
+    lateinit var contributeFetcher:ContributeFetcher
+
     override fun buildWiringContent(): RuntimeWiring {
 
         return RuntimeWiring.newRuntimeWiring()
@@ -40,6 +43,7 @@ class DaysSchemaResolver : BaseSchemaResolver() {
                         .dataFetcher("days",daysFetcher)
                         .dataFetcher("day",dayFetcher)
                         .dataFetcher("user",userFetcher)
+                        .dataFetcher("contribute",contributeFetcher)
                         .dataFetcher("defaultImages",defaultImageFetcher)}
                 .build()
     }
