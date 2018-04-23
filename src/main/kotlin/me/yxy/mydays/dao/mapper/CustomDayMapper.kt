@@ -94,7 +94,7 @@ interface CustomDayMapper {
      */
     @Select("""
         SELECT ifnull(count(1),0) FROM
-        (SELECT DISTINCT creatorId FROM custom_days WHERE userId = #{ownerId} AND enable = 1 AND creatorId != #{ownerId}) a
+        (SELECT DISTINCT creatorId FROM custom_days WHERE userId = #{ownerId} AND creatorId != #{ownerId}) a
         """)
     fun countInvited(@Param("ownerId") ownerId:Int):Int
 

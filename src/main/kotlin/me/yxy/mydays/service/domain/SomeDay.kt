@@ -1,6 +1,7 @@
 package me.yxy.mydays.service.domain
 
 data class SomeDay(val id:Int = 0,
+                     val userId:Int = 0,
                      val name:String = "",
                      var year:Int = 0,
                      val month:Int = 0,

@@ -15,5 +15,5 @@ data class AddDay(var userId:Int = 0,
                   val dateMode:Int = 0,
                   val favor:Boolean = false,
                   val comment:String = "",
-                  val beInviterId:Int = 0
+                  var beInviterId:Int = 0
                   )

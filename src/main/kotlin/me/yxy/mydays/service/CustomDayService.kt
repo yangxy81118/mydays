@@ -42,7 +42,7 @@ class CustomDayService {
         val customDay: CustomDayDO? = customDayMapper.findDayId(dayId)
 
         customDay?.let{
-            var day = SomeDay(it.id,it.name,
+            var day = SomeDay(it.id,it.userId,it.name,
                     it.year,it.month,it.date,it.image,
                     it.engName,it.brief,it.lunar,null,it.favor==1,customDay.comment)
 //            day.sugIds = formatSugIds(it.suggestions)
@@ -72,7 +72,7 @@ class CustomDayService {
 
         val dayList = mutableListOf<SomeDay>()
         customDaySource?.forEach{
-            var day = SomeDay(it.id,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
+            var day = SomeDay(it.id,it.userId,it.name,it.year,it.month,it.date,it.image,it.engName,it.brief,it.lunar)
 //            day.sugIds = formatSugIds(it.suggestions)
             day.favor = it.favor == 1
             dayList.add(day)

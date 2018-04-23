@@ -12,4 +12,5 @@ data class UserDO(var id:Int = 0,
                   var state:Int = 1,
                   var limitCount:Int = 0,
                   var nickName:String? = null,
-                  var avatarUrl:String? = null)
+                  var avatarUrl:String? = null,
+                  var loginToken:String? = null)

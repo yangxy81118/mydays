@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 
 /**
@@ -24,7 +25,7 @@ class GraphController {
     private val logger: Logger = LoggerFactory.getLogger(GreetingService::class.java)
 
     @PostMapping("/days")
-    fun daysHanlder(@RequestBody query:String): ResponseEntity<ExecutionResult> {
+    fun daysHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<ExecutionResult> {
         logger.info("GraphQL:$query")
         val result:ExecutionResult = daysSchemaResolver.graphQL.execute(query)
         return ResponseEntity(result, HttpStatus.OK)
