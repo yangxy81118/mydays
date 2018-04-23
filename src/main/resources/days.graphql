@@ -3,7 +3,7 @@ schema {
 }
 
 type Query{
-	days(userId:Int,favor:Boolean) : [SomeDay]
+	days(userId:Int!,favor:Boolean) : [SomeDay]
 	day(dayId:Int) : SomeDay
 	defaultImages(count:Int) : [String]
     user(userId:Int!):User

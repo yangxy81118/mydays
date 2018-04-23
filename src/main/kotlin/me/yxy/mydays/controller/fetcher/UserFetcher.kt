@@ -26,6 +26,8 @@ class UserFetcher : GraphqlDataFetcherAdapter<UserView>() {
     override fun get(environment: DataFetchingEnvironment): UserView {
         val userId:Int = environment.getArgument<Int>("userId")
 
+        checkOwner(userId)
+
         val userDomain = userService.getUserInfo(userId)
         val userView = UserView()
         BeanUtils.copyProperties(userDomain,userView)

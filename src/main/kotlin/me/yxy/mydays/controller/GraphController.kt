@@ -25,10 +25,21 @@ class GraphController {
     private val logger: Logger = LoggerFactory.getLogger(GreetingService::class.java)
 
     @PostMapping("/days")
-    fun daysHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<ExecutionResult> {
+    fun daysHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<Any> {
         logger.info("GraphQL:$query")
+
+        UserIdThreadLocalContainer.container.set(getUserIdFromContext(httpReq))
+
         val result:ExecutionResult = daysSchemaResolver.graphQL.execute(query)
-        return ResponseEntity(result, HttpStatus.OK)
+
+        return if(result.errors.size > 0){
+            ResponseEntity.ok("系统异常")
+        }else{
+            ResponseEntity.ok(result)
+        }
     }
 
+    private fun getUserIdFromContext(httpReq: HttpServletRequest): Int {
+        return httpReq.getAttribute("userId").toString().toInt()!!
+    }
 }
