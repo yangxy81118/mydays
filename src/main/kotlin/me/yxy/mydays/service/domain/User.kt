@@ -7,4 +7,5 @@ data class User(var id:Int = 0,
                 var createTime:Date? = null,
                 var lastLoginTime:Date? = null,
                 var limit:Int = 0,
-                var daysCount:Int = 0)
+                var nickName:String? = null,
+                var avatarUrl:String? = null)

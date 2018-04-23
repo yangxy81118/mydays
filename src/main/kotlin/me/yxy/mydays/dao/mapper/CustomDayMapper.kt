@@ -38,13 +38,16 @@ interface CustomDayMapper {
     fun findDayId(@Param("dayId") dayId:Int):CustomDayDO?
 
     @Insert("""
-        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor,comment)
-         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor},#{comment})
+        INSERT INTO custom_days (userId,name,year,month,date,image,lunar,favor,comment,creatorId)
+         VALUES (#{userId},#{name},#{year},#{month},#{date},#{image},#{lunar},#{favor},#{comment},#{creatorId})
         """)
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     fun addOne(day:CustomDayDO)
 
 
+    /**
+     * 更新某一天
+     */
     @Update("""
         <script>
             UPDATE custom_days
@@ -70,6 +73,9 @@ interface CustomDayMapper {
                 <if test="comment!=null">
                     comment = #{comment},
                 </if>
+                <if test="lastModifiedTime!=null">
+                    lastModifiedTime = #{lastModifiedTime},
+                </if>
             </set>
             WHERE id = #{id}
         </script>
@@ -77,7 +83,26 @@ interface CustomDayMapper {
     fun updateOne(day:CustomDayDO)
 
 
+    /**
+     * 删除某一天
+     */
     @Update("UPDATE custom_days SET enable = 0 WHERE id = #{id}")
     fun removeOne(id:Int)
 
+    /**
+     * 查询“我”邀请过的人数
+     */
+    @Select("""
+        SELECT ifnull(count(1),0) FROM
+        (SELECT DISTINCT creatorId FROM custom_days WHERE userId = #{ownerId} AND creatorId != #{ownerId}) a
+        """)
+    fun countInvited(@Param("ownerId") ownerId:Int):Int
+
+    /**
+     * 查询contributor为owner一共贡献过多少个日子，包括被删除的
+     */
+    @Select("""
+        SELECT ifnull(count(1),0) FROM `custom_days` where creatorId = #{contributorId} and userId = #{ownerId}
+        """)
+    fun countContributeForSomeone(@Param("contributorId") contributorId:Int, @Param("ownerId") ownerId:Int):Int
 }

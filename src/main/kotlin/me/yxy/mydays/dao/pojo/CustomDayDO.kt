@@ -1,5 +1,7 @@
 package me.yxy.mydays.dao.pojo
 
+import java.util.*
+
 /**
  * 用户自定义日期
  */
@@ -15,4 +17,8 @@ data class CustomDayDO(var id:Int = 0,
                        var lunar:String = "",
                        var suggestions:String? = null,
                        var favor:Int = 0,
-                       var comment:String = "")
+                       var comment:String = "",
+                       var creatorId:Int = 0,
+                       var createTime: Date? = null,
+                       var lastModifiedTime:Date? = null
+                       )
