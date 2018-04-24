@@ -19,13 +19,14 @@ abstract class GraphqlDataFetcherAdapter<T> : DataFetcher<T> {
     }
 
 
-    protected fun checkOwner(targetUserId: Int) {
+    protected fun illegalOwner(targetUserId: Int) : Boolean {
         val realUserId = UserIdThreadLocalContainer.container.get()
-        if(targetUserId != realUserId){
+        return if(targetUserId != realUserId){
            logger.warn("用户$realUserId 试图查询用户 $targetUserId 的数据!")
-            throw RuntimeException("非法操作")
+            true
+        }else{
+           false
         }
     }
-
 
 }

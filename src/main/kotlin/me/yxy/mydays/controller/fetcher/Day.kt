@@ -45,7 +45,10 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
             return null
         }
 
-        checkOwner(day.userId)
+        //安全校验
+        if(illegalOwner(day.userId)){
+            return null
+        }
 
         val dayView = SomeDayView()
 

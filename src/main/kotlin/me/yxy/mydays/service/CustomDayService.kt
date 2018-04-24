@@ -7,6 +7,7 @@ import me.yxy.mydays.dao.pojo.CustomDayDO
 import me.yxy.mydays.service.domain.SomeDay
 import me.yxy.mydays.tools.CNCalendarStorage
 import me.yxy.mydays.tools.UserConfiguration
+import org.apache.commons.lang3.StringUtils
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.slf4j.Logger
@@ -89,7 +90,7 @@ class CustomDayService {
 
         //拷贝基本属性
         val daoRequest = CustomDayDO()
-        daoRequest.name = dayReq.name
+        daoRequest.name = filterEmoji(dayReq.name)
         daoRequest.userId = dayReq.userId
         daoRequest.comment = dayReq.comment
         daoRequest.favor = if (dayReq.favor) 1 else 0
@@ -281,6 +282,19 @@ class CustomDayService {
 
     fun countContributeForSomeone(contributorId:Int,ownerId:Int):Int{
         return customDayMapper.countContributeForSomeone(contributorId,ownerId)
+    }
+
+    private fun filterEmoji(source: String, slipStr: String = ""): String {
+        return if (StringUtils.isNotBlank(source)) {
+            val s = source.replace("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]".toRegex(), slipStr)
+            return if(s.isEmpty()){
+                "不支持表情哦"
+            }else{
+                s.trim()
+            }
+        } else {
+            source.trim()
+        }
     }
 
 }

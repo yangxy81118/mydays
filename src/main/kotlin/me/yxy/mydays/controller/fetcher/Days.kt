@@ -25,7 +25,9 @@ class Days : GraphqlDataFetcherAdapter<MutableList<SomeDayView>>() {
         val userId:Int = environment.getArgument<Int>("userId")
         val isFavor:Boolean = environment.getArgument<Boolean>("favor") ?: false
 
-        checkOwner(userId)
+        if(illegalOwner(userId)){
+           return mutableListOf()
+        }
 
         //Holidays
         val dayViews = mutableListOf<SomeDayView>()
