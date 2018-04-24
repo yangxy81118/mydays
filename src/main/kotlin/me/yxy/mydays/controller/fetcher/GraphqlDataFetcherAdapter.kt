@@ -23,7 +23,7 @@ abstract class GraphqlDataFetcherAdapter<T> : DataFetcher<T> {
         val realUserId = UserIdThreadLocalContainer.container.get()
         return if(targetUserId != realUserId){
            logger.warn("用户$realUserId 试图查询用户 $targetUserId 的数据!")
-            true
+           true
         }else{
            false
         }
