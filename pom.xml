@@ -5,7 +5,7 @@
 
 	<groupId>me.yxy</groupId>
 	<artifactId>mydays</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>mydays</name>
@@ -118,12 +118,14 @@
 	</dependencies>
 
 	<build>
+        <finalName>${project.artifactId}-${project.version}_${timestamp}</finalName>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
 			</plugin>
 			<plugin>
 				<artifactId>kotlin-maven-plugin</artifactId>
@@ -158,6 +160,22 @@
 						<version>${kotlin.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+            <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<timestampFormat>yyyyMMddHHmmss</timestampFormat>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>create-timestamp</goal>
+						</goals>
+					</execution>
+				</executions>
+				<inherited>false</inherited>
 			</plugin>
 		</plugins>
 	</build>

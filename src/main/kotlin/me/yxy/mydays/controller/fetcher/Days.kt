@@ -1,6 +1,7 @@
 package me.yxy.mydays.controller.fetcher
 
 import graphql.schema.DataFetchingEnvironment
+import me.yxy.mydays.controller.UserIdThreadLocalContainer
 import me.yxy.mydays.controller.tools.CommonLogic
 import me.yxy.mydays.controller.vo.response.SomeDayView
 import me.yxy.mydays.service.CustomDayReqeust
@@ -21,8 +22,12 @@ class Days : GraphqlDataFetcherAdapter<MutableList<SomeDayView>>() {
 
     override fun get(environment: DataFetchingEnvironment):MutableList<SomeDayView> {
 
-        val userId:Int? = environment.getArgument<Int>("userId")
+        val userId:Int = environment.getArgument<Int>("userId")
         val isFavor:Boolean = environment.getArgument<Boolean>("favor") ?: false
+
+        if(illegalOwner(userId)){
+           return mutableListOf()
+        }
 
         //Holidays
         val dayViews = mutableListOf<SomeDayView>()
@@ -46,7 +51,6 @@ class Days : GraphqlDataFetcherAdapter<MutableList<SomeDayView>>() {
                 if(isInFuture){
                     viewItem.custom = true
                     viewItem.favor = it.favor
-                    findNextAge(viewItem)
                     dayViews.add(viewItem)
                 }
 
@@ -62,22 +66,6 @@ class Days : GraphqlDataFetcherAdapter<MutableList<SomeDayView>>() {
         dayViews.sortWith(Comparator { firstOne, secondOne -> firstOne.remain - secondOne.remain})
 
         return dayViews
-    }
-
-
-    private fun findNextAge(viewItem: SomeDayView) {
-
-        var birthYear = viewItem.year
-
-        val dayTemp = DateTime(birthYear,viewItem.month,viewItem.date,0,0, 0)
-        dayTemp.plusDays(1) //如果是今天，也是当作“未来”
-
-        if (dayTemp.isBeforeNow) {
-
-        }
-
-
-
     }
 
 

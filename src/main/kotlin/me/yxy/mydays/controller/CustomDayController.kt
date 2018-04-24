@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
+import org.apache.commons.lang3.StringUtils.isNotBlank
+import org.springframework.util.StringUtils
 
 
 /**
@@ -92,10 +94,26 @@ class CustomDayController {
 
 
 
-    @TokenRequired
     @CrossOrigin
-    @DeleteMapping()
-    fun deleteDay(@RequestParam("dayId") dayId:Int,httpReq: HttpServletRequest): ResponseEntity<ActionResponse> {
+    @DeleteMapping("/{dayId}")
+    fun deleteDay(@PathVariable dayId:Int, httpReq: HttpServletRequest): ResponseEntity<ActionResponse> {
+        logger.info("Delete Day,dayId:$dayId")
+
+        val userId:String? = httpReq.getAttribute("userId")?.toString()
+        if(!checkOwner(dayId,userId)){
+            logger.warn("用户 $userId 正在尝试修改别人的数据，dayId=$dayId")
+            return ResponseEntity.ok(ActionResponse(500,"Hey Bro, I'm watching you!!!!  "))
+        }
+
+        //通过token获取userId，校验userId和dayId的归属权！！！！
+        customDayService.deleteDay(dayId)
+        return ResponseEntity.ok(ActionResponse(0,"ok"))
+    }
+
+
+    @CrossOrigin
+    @DeleteMapping("")
+    fun deleteDay2(@RequestParam("dayId") dayId:Int, httpReq: HttpServletRequest): ResponseEntity<ActionResponse> {
         logger.info("Delete Day,dayId:$dayId")
 
         val userId:String? = httpReq.getAttribute("userId")?.toString()

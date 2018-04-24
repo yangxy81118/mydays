@@ -81,6 +81,16 @@ class CNCalendarStorage{
         return chineseDateToNormalDate[cnDateStr]?:""
     }
 
+
+    fun getLunarYearFromNormal(year:Int):String{
+        yearList.forEach {
+            if(it.y.startsWith(year.toString())){
+                return it.y
+            }
+        }
+        return ""
+    }
+
     /**
      * 对每个月中初一到廿九的字母进行压缩
      */

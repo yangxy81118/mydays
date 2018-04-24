@@ -26,6 +26,10 @@ class UserFetcher : GraphqlDataFetcherAdapter<UserView>() {
     override fun get(environment: DataFetchingEnvironment): UserView {
         val userId:Int = environment.getArgument<Int>("userId")
 
+//        if(illegalOwner(userId)){
+//            return UserView(44444,"I'm watching YOU!!")
+//        }
+
         val userDomain = userService.getUserInfo(userId)
         val userView = UserView()
         BeanUtils.copyProperties(userDomain,userView)

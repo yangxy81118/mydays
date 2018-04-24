@@ -45,6 +45,11 @@ class Day : GraphqlDataFetcherAdapter<SomeDayView>() {
             return null
         }
 
+        //安全校验
+        if(illegalOwner(day.userId)){
+            return null
+        }
+
         val dayView = SomeDayView()
 
         BeanUtils.copyProperties(day,dayView)

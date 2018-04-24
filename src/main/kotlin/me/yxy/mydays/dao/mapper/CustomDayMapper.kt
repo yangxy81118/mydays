@@ -20,6 +20,16 @@ interface CustomDayMapper {
             """)
     fun findDayByUserId(@Param("userId") userId:Int,@Param("favor") favor:Boolean = false):MutableList<CustomDayDO>?
 
+
+    /**
+     * 根据month和date查询对应的农历记录
+     */
+    @Select("""
+            SELECT * FROM custom_days
+            WHERE enable = 1 AND month = #{month} AND date = #{day} AND char_length(lunar) > 0
+        """)
+    fun findLunarDaysBySomeDate(@Param("month") month:Int,@Param("day") day:Int):MutableList<CustomDayDO>?
+
     /**
      * 查询数量
      */
