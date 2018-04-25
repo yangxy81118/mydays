@@ -90,7 +90,9 @@ class CustomDayService {
 
         //拷贝基本属性
         val daoRequest = CustomDayDO()
-        daoRequest.name = filterEmoji(dayReq.name)
+//        daoRequest.name = filterEmoji(dayReq.name)
+        daoRequest.name = dayReq.name
+
         daoRequest.userId = dayReq.userId
         daoRequest.comment = dayReq.comment
         daoRequest.favor = if (dayReq.favor) 1 else 0
@@ -282,6 +284,12 @@ class CustomDayService {
 
     fun countContributeForSomeone(contributorId:Int,ownerId:Int):Int{
         return customDayMapper.countContributeForSomeone(contributorId,ownerId)
+    }
+
+
+    fun findEmoji(source:String):Boolean{
+
+       return false
     }
 
     private fun filterEmoji(source: String, slipStr: String = ""): String {
