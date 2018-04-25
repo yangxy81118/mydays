@@ -72,16 +72,12 @@ class CustomDayController {
         return ResponseEntity.ok(ActionResponse(0,newDayId.toString()))
     }
 
-    private fun getUserIdFromContext(httpReq: HttpServletRequest): Int {
-        return httpReq.getAttribute("userId").toString().toInt()!!
-    }
 
     @CrossOrigin
     @PostMapping()
     fun updateCustomDay(@RequestBody request: AddDay,httpReq:HttpServletRequest):ResponseEntity<ActionResponse>  {
         logger.info("Update Day : $request")
 
-        //通过token获取userId，校验userId和dayId的归属权！！！！
         val userId:String? = httpReq.getAttribute("userId")?.toString()
         if(!checkOwner(request.dayId,userId)) {
             logger.warn("用户 $userId 正在尝试修改别人的数据，dayId=${request.dayId}")
@@ -105,7 +101,6 @@ class CustomDayController {
             return ResponseEntity.ok(ActionResponse(500,"Hey Bro, I'm watching you!!!!  "))
         }
 
-        //通过token获取userId，校验userId和dayId的归属权！！！！
         customDayService.deleteDay(dayId)
         return ResponseEntity.ok(ActionResponse(0,"ok"))
     }
@@ -122,7 +117,6 @@ class CustomDayController {
             return ResponseEntity.ok(ActionResponse(500,"Hey Bro, I'm watching you!!!!  "))
         }
 
-        //通过token获取userId，校验userId和dayId的归属权！！！！
         customDayService.deleteDay(dayId)
         return ResponseEntity.ok(ActionResponse(0,"ok"))
     }
@@ -140,5 +134,8 @@ class CustomDayController {
 
     }
 
+    private fun getUserIdFromContext(httpReq: HttpServletRequest): Int {
+        return httpReq.getAttribute("userId").toString().toInt()!!
+    }
 
 }
