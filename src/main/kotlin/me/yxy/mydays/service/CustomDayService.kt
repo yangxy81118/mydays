@@ -199,6 +199,7 @@ class CustomDayService {
 
         val thisYear:Int = DateTime.now().year
         var thisYearLunarStr = ""
+        var finalLunarStr:String
 
         //首先去获取今年的阳历
         cnCalStorage.yearList.forEach {
@@ -208,8 +209,13 @@ class CustomDayService {
         }
 
         thisYearLunarStr += date.substring(date.indexOf("）")+1)
+        finalLunarStr = thisYearLunarStr
 
-        val thisYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(thisYearLunarStr)
+        var thisYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(thisYearLunarStr)
+        if(thisYearNormalDate.isEmpty()){
+            finalLunarStr = thisYearLunarStr.replace("三十","廿九")
+            thisYearNormalDate = cnCalStorage.getNormalDateFromLunarDate(finalLunarStr)
+        }
 
         //如果今年的日期已经过了今天的，那就直接算明年的了
         if(DateTimeFormat.forPattern("yyyy-MM-dd")
@@ -223,10 +229,17 @@ class CustomDayService {
             }
 
             nextYearLunarStr += date.substring(date.indexOf("）")+1)
-            return nextYearLunarStr
+            finalLunarStr = nextYearLunarStr
         }
 
-        return thisYearLunarStr
+        if(finalLunarStr.endsWith("三十")){
+            //检查这一年的三十是否真的存在，如果不存在，那么就过“廿九”）
+            if(cnCalStorage.getNormalDateFromLunarDate(finalLunarStr).isEmpty()){
+               finalLunarStr = finalLunarStr.replace("三十","廿九")
+            }
+        }
+
+        return finalLunarStr
 
     }
 
