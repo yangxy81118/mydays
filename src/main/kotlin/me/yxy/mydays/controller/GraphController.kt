@@ -2,6 +2,7 @@ package me.yxy.mydays.controller
 
 import graphql.ExecutionResult
 import me.yxy.mydays.controller.schema.DaysSchemaResolver
+import me.yxy.mydays.controller.schema.ResourceSchemaResolver
 import me.yxy.mydays.service.GreetingService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,16 +23,17 @@ class GraphController {
     @Autowired
     lateinit var daysSchemaResolver: DaysSchemaResolver
 
+    @Autowired
+    lateinit var resourceSchemaResolver: ResourceSchemaResolver
+
     private val logger: Logger = LoggerFactory.getLogger(GreetingService::class.java)
 
     @PostMapping("/days")
     fun daysHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<Any> {
         logger.info("GraphQL:$query")
-
         UserIdThreadLocalContainer.container.set(getUserIdFromContext(httpReq))
 
         val result:ExecutionResult = daysSchemaResolver.graphQL.execute(query)
-
         return if(result.errors.size > 0){
             ResponseEntity.ok("系统异常")
         }else{
@@ -39,6 +41,19 @@ class GraphController {
         }
     }
 
+    @PostMapping("/resource")
+    fun resourceHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<Any> {
+
+        logger.info("GraphQL:$query")
+
+        val result:ExecutionResult = resourceSchemaResolver.graphQL.execute(query)
+        return if(result.errors.size > 0){
+            ResponseEntity.ok("系统异常")
+        }else{
+            ResponseEntity.ok(result)
+        }
+
+    }
     private fun getUserIdFromContext(httpReq: HttpServletRequest): Int {
         return httpReq.getAttribute("userId").toString().toInt()!!
     }

@@ -11,41 +11,25 @@ import java.io.Reader
 
 
 /**
- * days模块
+ * resources模块，主要访问一些与具体用户无关的资源数据
  */
 @Component
-class DaysSchemaResolver : BaseSchemaResolver() {
+class ResourceSchemaResolver : BaseSchemaResolver() {
 
     override fun getResourceFile(): Reader {
-        val resource = ClassPathResource("days.graphql")
+        val resource = ClassPathResource("resource.graphql")
         return InputStreamReader(resource.inputStream)
     }
 
     @Autowired
-    lateinit var daysFetcher: Days
-
-    @Autowired
-    lateinit var dayFetcher: Day
-
-    @Autowired
-    lateinit var defaultImageFetcher:DefaultImages
-
-    @Autowired
-    lateinit var userFetcher:UserFetcher
-
-    @Autowired
-    lateinit var contributeFetcher:ContributeFetcher
+    lateinit var noticeFetcher: NoticeFetcher
 
     override fun buildWiringContent(): RuntimeWiring {
 
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query")
                 { typeW -> typeW
-                        .dataFetcher("days",daysFetcher)
-                        .dataFetcher("day",dayFetcher)
-                        .dataFetcher("user",userFetcher)
-                        .dataFetcher("contribute",contributeFetcher)
-                        .dataFetcher("defaultImages",defaultImageFetcher)}
+                        .dataFetcher("notice",noticeFetcher)}
                 .build()
     }
 
