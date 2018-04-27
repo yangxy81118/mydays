@@ -5,6 +5,7 @@ import me.yxy.mydays.dao.mapper.UserMapper
 import me.yxy.mydays.dao.pojo.UserDO
 import me.yxy.mydays.service.domain.User
 import me.yxy.mydays.tools.UserConfiguration
+import org.joda.time.DateTime
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -46,11 +47,24 @@ class UserService {
     }
 
 
+    /**
+     * 一般更新用户
+     */
     fun updateUser(updateReq: UserReq){
         val userDO = UserDO()
         userDO.avatarUrl = updateReq.avatarUrl
         userDO.nickName = updateReq.nickName
         userDO.id = updateReq.id
+        userMapper.updateUser(userDO)
+    }
+
+    /**
+     * 更新最近登陆时间
+     */
+    fun lastLogin(userId:Int){
+        val userDO = UserDO()
+        userDO.id = userId
+        userDO.lastLoginTime = DateTime.now().toDate()
         userMapper.updateUser(userDO)
     }
 }

@@ -8,5 +8,5 @@ data class UserReq(var id:Int = 0,
                    val openId:String = "",
                    val nickName:String = "",
                    val avatarUrl:String = "",
-                   val limit:Int = 20,
+                   val limit:Int = 30,
                    val state:Int = 1)

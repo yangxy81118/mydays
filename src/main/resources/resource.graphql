@@ -1,0 +1,16 @@
+schema {
+	query:Query
+}
+
+type Query{
+	notice(page:Int,rows:Int):[Notice]
+}
+
+type Notice{
+    id:Int
+    title:String
+    type:Int
+    date:String
+    content:[String]
+}
+
