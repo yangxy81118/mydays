@@ -5,6 +5,7 @@ import me.yxy.mydays.controller.vo.response.NoticeView
 import me.yxy.mydays.service.NoticeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.text.SimpleDateFormat
 
 /**
  * Notice
@@ -27,8 +28,10 @@ class NoticeFetcher : GraphqlDataFetcherAdapter<List<NoticeView>>() {
         val notices = noticeService.queryNotices(startRow,rows)
 
         val views = mutableListOf<NoticeView>()
+        val dateFmt = SimpleDateFormat("MM-dd")
         notices.forEach {
-            val view = NoticeView(it.title,it.type)
+            val view = NoticeView(it.title,it.type,it.id)
+            view.date = dateFmt.format(it.createTime)
             view.content = splitToList(it.content)
             views.add(view)
         }

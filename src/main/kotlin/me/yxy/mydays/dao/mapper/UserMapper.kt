@@ -39,6 +39,9 @@ public interface UserMapper {
                 <if test="loginToken!=null">
                     loginToken = #{loginToken},
                 </if>
+                <if test="lastLoginTime!=null">
+                    lastLoginTime = #{lastLoginTime},
+                </if>
             </set>
             WHERE id = #{id}
         </script>

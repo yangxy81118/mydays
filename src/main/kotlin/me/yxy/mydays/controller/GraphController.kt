@@ -26,7 +26,7 @@ class GraphController {
     @Autowired
     lateinit var resourceSchemaResolver: ResourceSchemaResolver
 
-    private val logger: Logger = LoggerFactory.getLogger(GreetingService::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(GraphController::class.java)
 
     @PostMapping("/days")
     fun daysHanlder(@RequestBody query:String,httpReq:HttpServletRequest): ResponseEntity<Any> {

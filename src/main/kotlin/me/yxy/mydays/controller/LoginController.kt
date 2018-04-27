@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.util.StringUtils
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 
@@ -25,6 +22,7 @@ import java.util.*
  * 健康度检查
  */
 @RestController
+@RequestMapping("/login")
 class LoginController {
 
 
@@ -43,7 +41,7 @@ class LoginController {
     private val logger: Logger = LoggerFactory.getLogger(LoginController::class.java)
 
     @CrossOrigin
-    @GetMapping("/login")
+    @GetMapping("")
     fun queryUserId(@RequestParam(value = "code") code: String): ResponseEntity<LoginResponse> {
 
         var url = "https://api.weixin.qq.com/sns/jscode2session?appid=$APP_ID&secret=$APP_SECRET&js_code=$code&grant_type=authorization_code"

@@ -7,8 +7,10 @@ type Query{
 }
 
 type Notice{
+    id:Int
     title:String
     type:Int
+    date:String
     content:[String]
 }
 
